@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>42 Evaluation Sheet</title>
+<style>
+:root{
+--bg:#030b1d;--panel:#0a1a3a;--panel2:#112754;
+--text:#e8eefc;--muted:#aab8d6;
+--accent:#b26cff;--yes:#22c55e;--no:#ef4444;
+}
+*{box-sizing:border-box}
+body{
+margin:0;padding:30px;background:linear-gradient(180deg,#020817,#071633);
+font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);
+}
+.container{max-width:1200px;margin:auto}
+.header,.card{
+background:linear-gradient(180deg,var(--panel),var(--panel2));
+border:1px solid rgba(255,255,255,.08);
+border-radius:16px;padding:22px;margin-bottom:18px;
+box-shadow:0 8px 30px rgba(0,0,0,.25);
+}
+h1,h2,h3{margin-top:0}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+input[type=text], textarea{
+width:100%;background:#061126;color:white;
+border:1px solid rgba(255,255,255,.15);
+border-radius:10px;padding:10px;
+}
+textarea{min-height:180px}
+pre{white-space:pre-wrap;color:var(--muted);font-family:inherit}
+.radios{margin-top:15px}
+.radios input{display:none}
+.radios label{
+display:inline-block;padding:10px 18px;margin-right:10px;
+border-radius:10px;border:1px solid rgba(255,255,255,.15);
+cursor:pointer
+}
+.y:checked+label{background:var(--yes)}
+.n:checked+label{background:var(--no)}
+button{
+background:var(--accent);border:none;color:white;
+padding:12px 20px;border-radius:10px;cursor:pointer;font-weight:bold
+}
+#result{font-size:24px;font-weight:bold;margin-top:15px}
+.small{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+<h1>42 Piscine Evaluation Sheet</h1>
+<div class="meta">
+<div><label>Student</label><input type="text"></div>
+<div><label>Evaluator</label><input type="text"></div>
+<div><label>Date</label><input type="text"></div>
+</div>
+</div>
+
+<div class="card">
+<h2>Evaluation Guidelines</h2>
+<ul>
+<li>Remain polite, courteous, respectful and constructive throughout the evaluation process.</li>
+<li>Identify and discuss any dysfunctions with the evaluated student/group.</li>
+<li>Keep an open mind regarding interpretations of the project scope.</li>
+<li>Grade honestly and conduct peer-evaluation seriously.</li>
+</ul>
+</div>
+
+<div id="sections"></div>
+
+<div class="card">
+<h2>Overall Feedback</h2>
+<textarea placeholder="Write your final feedback here..."></textarea>
+</div>
+
+<div class="card">
+<h2>Final Result</h2>
+<button onclick="calc()">Calculate Result</button>
+<div id="result">Awaiting evaluation...</div>
+<p class="small">Any "NO" automatically results in FAIL.</p>
+</div>
+
+</div>
+
+<script>
+const sections=[
+{
+title:"Preliminaries",
+text:`Only grade the work that is in the student's or group's GiT repository.
+
+Double-check that the repository belongs to the student/group.
+
+Ensure the work is for the relevant project and git clone is used in an empty folder.
+
+Check carefully that no malicious aliases were used.
+
+Verify both students reviewed possible grading scripts.
+
+If the evaluator has not completed the project, the entire subject must be read beforehand.
+
+No segfaults, crashes, premature termination, or unexpected behavior are allowed.
+
+Do not edit files except configuration files if applicable.
+
+Check that only requested files are present in the repository.`
+},
+{
+title:"Exercise 0 - ft_putchar",
+text:`Perform your own checks, verifications and tests. If you don't find a failing case, select YES. Otherwise select NO.`
+},
+{
+title:"Exercise 1 - ft_print_alphabet",
+text:`Perform your own checks, verifications and tests. If you don't find a failing case, select YES. Otherwise select NO.`
+},
+{
+title:"Exercise 2 - ft_print_reverse_alphabet",
+text:`Perform your own checks, verifications and tests. If you don't find a failing case, select YES. Otherwise select NO.`
+},
+{
+title:"Exercise 3 - ft_print_numbers",
+text:`Perform your own checks, verifications and tests. If you don't find a failing case, select YES. Otherwise select NO.`
+},
+{
+title:"Exercise 4 - ft_is_negative",
+text:`Perform your own checks, verifications and tests. If you don't find a failing case, select YES. Otherwise select NO.`
+}
+];
+
+const c=document.getElementById("sections");
+sections.forEach((s,i)=>{
+c.innerHTML+=`
+<div class="card">
+<h3>${s.title}</h3>
+<pre>${s.text}</pre>
+<div class="radios">
+<input class="y" type="radio" name="q${i}" id="y${i}" value="yes">
+<label for="y${i}">YES</label>
+
+<input class="n" type="radio" name="q${i}" id="n${i}" value="no">
+<label for="n${i}">NO</label>
+</div>
+</div>`;
+});
+
+function calc(){
+let pass=true;
+for(let i=0;i<sections.length;i++){
+const v=document.querySelector(`input[name=q${i}]:checked`);
+if(!v || v.value==="no") pass=false;
+}
+document.getElementById("result").innerHTML=pass
+? "✅ PASS"
+: "❌ FAIL";
+}
+</script>
+</body>
+</html>
